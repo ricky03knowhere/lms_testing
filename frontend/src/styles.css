@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+}
+
+.navbar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+  border-right: 1px solid #ddd;
+}
+
+.container {
+  padding: 20px;
+}
