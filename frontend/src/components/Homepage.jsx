@@ -20,16 +20,20 @@ const Homepage = () => {
       <h2 className="mb-4">Modules</h2>
       <div className='mb-3'>Berikut module yang dapat anda pelajari untuk menambah skill pemrograman / komputer kalian, daftar sekarang juga!!</div>
       <div className="row">
-        {modules.map((module) => (
-          <div className="col-md-4 mb-3" key={module.id}>
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">{module.name}</h5>
-                <p className="card-text">{module.description}</p>
+        {modules.map((module) => {
+          let randNum = Math.round(Math.random() * 4)
+          let randColor = randNum == 1 ? 'danger' : randNum == 2 ? 'primary' : randNum == 3 ? 'info' : randNum == 4 ? 'warning' : 'success'
+          return (
+            <div className="col-md-4 mb-4" key={module.id}>
+              <div className={"card rounded-4 bg-gradient bg-" + randColor + "-subtle"}>
+                <div className="card-body">
+                  <h5 className="card-title">{module.name}</h5>
+                  <p className="card-text">{module.description}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   );

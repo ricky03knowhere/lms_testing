@@ -47,14 +47,25 @@ function ContentModalForm({ show, handleClose, fetchContent, editData }) {
         await axios.put(SERVER_URL + `/api/content/${editData.id}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        setFormData({
+          title: "",
+          module_id: 0,
+          description: "",
+          created_by: 1,
+        });
       } else {
         // Add new item
-
         await axios.post(SERVER_URL + "/api/content", formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        setFormData({
+          title: "",
+          module_id: 0,
+          description: "",
+          created_by: 1,
+        });
       }
-      fetchContent(); // Refresh the item list after adding/editing
+      fetchContent(3); // Refresh the item list after adding/editing
       handleClose(); // Close the modal
     } catch (error) {
       console.error("Error saving item:", error);

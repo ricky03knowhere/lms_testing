@@ -85,4 +85,9 @@ router.get("/participant-scores/", authMiddleware, async (req, res) => {
   res.json(participants[0]);
 });
 
+router.get("/users/", authMiddleware, async (req, res) => {
+  const [rows] = await db.query("SELECT users.name, users.email, users.role FROM users");
+  res.json({data:rows});
+});
+
 module.exports = router;

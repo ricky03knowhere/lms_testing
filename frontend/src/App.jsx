@@ -7,6 +7,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Layout from "./components/Layout";
 import Contents from "./components/Contents";
+import Modules from "./components/Modules";
+import Users from "./components/Users";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,6 +29,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/contents" element={<Contents />} />
+          <Route path="/modules" element={<Modules />} />
+          <Route path="/users" element={<Users />} />
           <Route
             path="/"
             element={isAuthenticated ? <Dashboard /> : <Homepage />}

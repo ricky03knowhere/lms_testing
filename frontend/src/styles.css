@@ -2,7 +2,7 @@ body {
   margin: 0;
 }
 
-.navbar {
+.navbar.bg-light {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -10,6 +10,6 @@ body {
   border-right: 1px solid #ddd;
 }
 
-.container {
-  padding: 20px;
+.sidebar .nav-link.active {
+  color: #fff !important;
 }

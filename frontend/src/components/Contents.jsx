@@ -14,16 +14,17 @@ function Contents() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchContent(1);
-  }, []);
+  }, [search]);
 
   const ITEMS_PER_PAGE = 10; // Limit per page
 
   const fetchContent = async (page) => {
     try {
-      const response = await axios.get(SERVER_URL + `/api/content?page=${page}&limit=${ITEMS_PER_PAGE}`,
+      const response = await axios.get(SERVER_URL + `/api/content?page=${page}&limit=${ITEMS_PER_PAGE}&search=${search}`,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
       const { data, total } = response.data;
 
@@ -59,7 +60,7 @@ function Contents() {
       await axios.delete(SERVER_URL + `/api/content/${selectedContent.id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      fetchContent();
+      fetchContent(3);
       setShowDeleteConfirm(false);
     } catch (error) {
       console.error("Error deleting item:", error);
@@ -69,35 +70,49 @@ function Contents() {
   return (
     <div>
       <h2>Daftar Content</h2>
-      <Row className="mb-3">
+      <Row className="my-3">
         <Col>
           <Button variant="primary" onClick={handleShowAddModal}>
             Tambah Content
           </Button>
         </Col>
       </Row>
-      {/* Pagination */}
-      <nav>
-        <ul className="pagination justify-content-center">
-          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-            <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}><i class="fa fa-angle-double-left"></i></button>
-          </li>
-          {Array.from({ length: totalPages }, (_, index) => (
-            <li
-              key={index}
-              className={`page-item ${currentPage === index + 1 ? 'active fw-bold' : ''}`}
-            >
-              <button className="page-link" onClick={() => handlePageChange(index + 1)}>
-                {index + 1}
-              </button>
-            </li>
-          ))}
-          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}><i class="fa fa-angle-double-right"></i></button>
-          </li>
-        </ul>
-      </nav>
-      <Table striped bordered hover>
+      {/* Live Search */}
+      <Row className="align-items-center mb-3">
+        <Col md={3}>
+          <Form.Control
+            type="text"
+            placeholder="Search by content name"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Col>
+        <Col md={3}>
+          {/* Pagination */}
+          <nav>
+            <ul className="pagination justify-content-start m-0">
+              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}><i class="fa fa-angle-double-left"></i></button>
+              </li>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <li
+                  key={index}
+                  className={`page-item ${currentPage === index + 1 ? 'active fw-bold' : ''}`}
+                >
+                  <button className="page-link" onClick={() => handlePageChange(index + 1)}>
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}><i class="fa fa-angle-double-right"></i></button>
+              </li>
+            </ul>
+          </nav>
+        </Col>
+      </Row>
+
+      <Table striped bordered hover style={{ maxWidth: '80%' }}>
         <thead>
           <tr>
             <th>#</th>
@@ -110,7 +125,7 @@ function Contents() {
         <tbody>
           {content.map((item, i) => (
             <tr key={item.id}>
-              <td>{i + 1}</td>
+              <td>{(currentPage == 1) ? i + 1 : (currentPage * ITEMS_PER_PAGE + i + 1)}</td>
               <td>{item.title}</td>
               <td>{item.module}</td>
               <td>{item.description}</td>
